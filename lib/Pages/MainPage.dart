@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:newsapp/Pages/key.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
 import 'artical.dart';
@@ -27,7 +28,7 @@ class _MainPageState extends State<MainPage> {
   String queary = "headline";
   void getNews() async {
     try {
-      String url = "https://newsapi.org/v2/everything?q=${sear_query}&apiKey=0d055f929881493bbebbdef1c72989ed";
+      String url = "https://newsapi.org/v2/everything?q=${sear_query}&apiKey=${api_key2}";
       print(url);
       var response = await http.get(Uri.parse(url));
 
@@ -59,7 +60,7 @@ class _MainPageState extends State<MainPage> {
   void Slider() async {
     try {
 
-      String url = "https://newsapi.org/v2/everything?q=top&apiKey=0d055f929881493bbebbdef1c72989ed";
+      String url = "https://newsapi.org/v2/everything?q=top&apiKey=${api_key2}";
       var response = await http.get(Uri.parse(url));
 
       var jsonData = jsonDecode(response.body);
@@ -101,13 +102,13 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-        theme: ThemeData(
+      theme: ThemeData(
         brightness: isDark?Brightness.light: Brightness.dark,
-        ),
+      ),
       home: SafeArea(
         child:
-        _loading?
-        Center(child: CircularProgressIndicator(color: Colors.white)):
+        // _loading?
+        // Center(child: CircularProgressIndicator(color: Colors.white)):
         Scaffold(
           body: SingleChildScrollView(
             child:
@@ -149,38 +150,38 @@ class _MainPageState extends State<MainPage> {
                     ],
                   ),
                   SizedBox(height: 20,),
-                 CarouselSlider(
-                   items: [
-                 SlideView(
-                 imgUrl: slider[0].urlToImage,
-                   posturl:  slider[0].articleUrl,
-                 ),
-                     SlideView(
-                       imgUrl: slider[1].urlToImage,
-                       posturl:  slider[1].articleUrl,
-                     ),
-                     SlideView(
-                       imgUrl: slider[2].urlToImage,
-                       posturl:  slider[2].articleUrl,
-                     ),SlideView(
-                       imgUrl: slider[3].urlToImage,
-                       posturl:  slider[3].articleUrl,
-                     ),SlideView(
-                       imgUrl: slider[4].urlToImage,
-                       posturl:  slider[4].articleUrl,
-                     )
-                   ],
-                   options: CarouselOptions(
-                     height: 260.0,
-                     enlargeCenterPage: true,
-                     autoPlay: true,
-                     aspectRatio: 16 / 9,
-                     autoPlayCurve: Curves.fastOutSlowIn,
-                     enableInfiniteScroll: true,
-                     autoPlayAnimationDuration: Duration(milliseconds: 800),
-                     viewportFraction: 0.8,
-                   ),
-                 ),
+                  CarouselSlider(
+                    items: [
+                      SlideView(
+                        imgUrl: slider[0].urlToImage,
+                        posturl:  slider[0].articleUrl,
+                      ),
+                      SlideView(
+                        imgUrl: slider[1].urlToImage,
+                        posturl:  slider[1].articleUrl,
+                      ),
+                      SlideView(
+                        imgUrl: slider[2].urlToImage,
+                        posturl:  slider[2].articleUrl,
+                      ),SlideView(
+                        imgUrl: slider[3].urlToImage,
+                        posturl:  slider[3].articleUrl,
+                      ),SlideView(
+                        imgUrl: slider[4].urlToImage,
+                        posturl:  slider[4].articleUrl,
+                      )
+                    ],
+                    options: CarouselOptions(
+                      height: 260.0,
+                      enlargeCenterPage: true,
+                      autoPlay: true,
+                      aspectRatio: 16 / 9,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enableInfiniteScroll: true,
+                      autoPlayAnimationDuration: Duration(milliseconds: 800),
+                      viewportFraction: 0.8,
+                    ),
+                  ),
                   Stack(
                     children: [
                       TextFormField(
@@ -189,8 +190,8 @@ class _MainPageState extends State<MainPage> {
                             borderRadius: new BorderRadius.circular(25.0),
                             borderSide: new BorderSide(
                             ),
+                          ),
                         ),
-                      ),
                         validator: (value){
                           if (value!.isEmpty){
                             setState(() {
@@ -202,12 +203,12 @@ class _MainPageState extends State<MainPage> {
                           }
                         },
                         onFieldSubmitted: (value){
-                            setState(() {
-                              _loading = true;
-                              sear_query = value;
-                              news = [];
-                              getNews();
-                            });
+                          setState(() {
+                            _loading = true;
+                            sear_query = value;
+                            news = [];
+                            getNews();
+                          });
                         }
                         ,
                       ).p32(),
@@ -217,26 +218,26 @@ class _MainPageState extends State<MainPage> {
                       )
                     ],
                   ),
-                  
+
                   SizedBox(height: 20),
                   "Recent News".text.xl3.extraBold.make().pOnly(left: 32.0),
                   SizedBox(height: 20),
-                    SingleChildScrollView(
-                      child: ListView.builder(
-                          primary: false,
-                          shrinkWrap: true,
-                          itemCount: news.length,
-                          itemBuilder: (BuildContext context,int index){
+                  SingleChildScrollView(
+                    child: ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemCount: news.length,
+                        itemBuilder: (BuildContext context,int index){
                           return NewsTile(
-                          imgUrl: news[index].urlToImage,
+                            imgUrl: news[index].urlToImage,
                             title: news[index].title,
                             desc: news[index].description,
                             content: news[index].content,
                             posturl: news[index].articleUrl,
                           ).p16();
                         }
-                ),
                     ),
+                  ),
                 ],
               ),
             ),
